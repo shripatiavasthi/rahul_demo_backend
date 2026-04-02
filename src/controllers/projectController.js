@@ -355,6 +355,53 @@ const deleteProjectGalleryImage = async (req, res) => {
   }
 }
 
+const updateProjectGalleryImageCaption = async (req, res) => {
+  try {
+    await connectDB()
+    const { key, caption } = req.body
+
+    if (!key) {
+      return res.status(400).json({
+        success: false,
+        message: "key is required"
+      })
+    }
+
+    const project = await Project.findOne({ slug: req.params.slug })
+
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found"
+      })
+    }
+
+    const image = project.galleryImages.find((item) => item.key === key)
+
+    if (!image) {
+      return res.status(404).json({
+        success: false,
+        message: "Gallery image not found"
+      })
+    }
+
+    image.caption = typeof caption === "string" ? caption.trim() : ""
+    await project.save()
+
+    return res.status(200).json({
+      success: true,
+      message: "Gallery image caption updated successfully",
+      data: project
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update gallery image caption",
+      error: error.message
+    })
+  }
+}
+
 const deleteProject = async (req, res) => {
   try {
     await connectDB()
@@ -396,6 +443,7 @@ module.exports = {
   getProjectBySlug,
   updateProject,
   addProjectGalleryImages,
+  updateProjectGalleryImageCaption,
   deleteProjectGalleryImage,
   deleteProject
 };

@@ -6,6 +6,7 @@ const {
   getProjectBySlug,
   updateProject,
   addProjectGalleryImages,
+  updateProjectGalleryImageCaption,
   deleteProjectGalleryImage,
   deleteProject
 } = require("../controllers/projectController");
@@ -19,6 +20,7 @@ router.post("/", requireAdminAuth, createProject);
 router.put("/:slug", requireAdminAuth, updateProject);
 router.delete("/:slug", requireAdminAuth, deleteProject);
 router.post("/:slug/gallery", requireAdminAuth, addProjectGalleryImages);
+router.patch("/:slug/gallery", requireAdminAuth, updateProjectGalleryImageCaption);
 router.delete("/:slug/gallery", requireAdminAuth, deleteProjectGalleryImage);
 
 module.exports = router;
