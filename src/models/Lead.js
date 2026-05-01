@@ -35,8 +35,13 @@ const leadSchema = new mongoose.Schema(
     },
     status: {
       type: String,
+      enum: ["new", "pending", "completed", "rejected"],
       default: "new",
       trim: true
+    },
+    isVisible: {
+      type: Boolean,
+      default: true
     }
   },
   {
